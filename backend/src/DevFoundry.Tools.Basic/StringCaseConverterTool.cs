@@ -73,12 +73,12 @@ public sealed class StringCaseConverterTool : ITool
 
     private static string[] SplitWords(string input)
     {
-        // Handle common separators and case transitions
-        var withSpaces = Regex.Replace(input, @"([a-z])([A-Z])", "$1 $2"); // camelCase -> camel Case
-        withSpaces = Regex.Replace(withSpaces, @"([A-Z]+)([A-Z][a-z])", "$1 $2"); // XMLParser -> XML Parser
-        withSpaces = withSpaces.Replace("_", " ").Replace("-", " "); // snake_case, kebab-case
+        var normalized = Regex.Replace(input, @"[^A-Za-z0-9]+", " "); // punctuation -> space
+        normalized = Regex.Replace(normalized, @"([a-z0-9])([A-Z])", "$1 $2"); // camelCase -> camel Case
+        normalized = Regex.Replace(normalized, @"([A-Z]+)([A-Z][a-z])", "$1 $2"); // XMLParser -> XML Parser
+        normalized = Regex.Replace(normalized, @"(?<=[A-Za-z])(?=[0-9])|(?<=[0-9])(?=[A-Za-z])", " "); // split letters/digits
 
-        return withSpaces.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        return normalized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
     }
 
     private static string ToCamelCase(string input)

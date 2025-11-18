@@ -122,7 +122,7 @@ public sealed class TimestampConverterTool : ITool
 
         // Try parsing as ISO 8601 first
         if (DateTimeOffset.TryParse(dateTimeStr, CultureInfo.InvariantCulture,
-            DateTimeStyles.None, out dateTime))
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dateTime))
         {
             var unixTime = useMilliseconds
                 ? dateTime.ToUnixTimeMilliseconds()
