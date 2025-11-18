@@ -26,6 +26,8 @@ builder.Services.AddTool<TimestampConverterTool>();
 builder.Services.AddTool<StringCaseConverterTool>();
 builder.Services.AddTool<UrlEncoderTool>();
 builder.Services.AddTool<JwtDecoderTool>();
+builder.Services.AddTool<ColorConverterTool>();
+builder.Services.AddTool<TextDiffTool>();
 
 // Register runtime
 builder.Services.AddDevFoundryRuntime();
