@@ -12,7 +12,8 @@
       "Bash(/tmp/test-api.json)",
       "Bash(/tmp/test-404.json)",
       "Bash(taskkill:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(chmod:*)"
     ],
     "deny": [],
     "ask": []
