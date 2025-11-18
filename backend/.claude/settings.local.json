@@ -10,7 +10,8 @@
       "Bash(curl:*)",
       "Bash(netstat:*)",
       "Bash(/tmp/test-api.json)",
-      "Bash(/tmp/test-404.json)"
+      "Bash(/tmp/test-404.json)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []
