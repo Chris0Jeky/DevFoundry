@@ -62,6 +62,10 @@ Then open `http://localhost:5173` in your browser.
 
 ### Text Tools
 - **String Case Converter** - Convert between camelCase, PascalCase, snake_case, kebab-case, etc.
+- **Text Diff** - Compare two texts line-by-line with unified or side-by-side view
+
+### Utility Tools
+- **Color Converter** - Convert between HEX, RGB, RGBA, HSL, HSLA with live preview
 
 ## Roadmap
 
@@ -84,11 +88,17 @@ Then open `http://localhost:5173` in your browser.
 * [x] Tool favorites with star button
 * [x] Tool usage history tracking
 
+### Completed (v0.4.0)
+* [x] Color Converter tool with live color preview
+* [x] Text Diff tool with unified and side-by-side formats
+* [x] Complete near-term tool suite (11 tools total)
+* [x] Comprehensive test coverage for all new tools
+
 ### Future
 * [ ] Desktop packaging (Tauri/Electron)
 * [ ] Tool configuration presets
 * [ ] Export/import tool history
-* [ ] Batch processing support
+* [ ] Additional tools (XML formatter, CSV converter, RegEx tester)
 
 ## Documentation
 

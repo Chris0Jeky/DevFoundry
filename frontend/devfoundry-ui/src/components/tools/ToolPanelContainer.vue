@@ -39,6 +39,8 @@ import TimestampPanel from './TimestampPanel.vue'
 import StringCasePanel from './StringCasePanel.vue'
 import UrlEncoderPanel from './UrlEncoderPanel.vue'
 import JwtPanel from './JwtPanel.vue'
+import ColorConverterPanel from './ColorConverterPanel.vue'
+import TextDiffPanel from './TextDiffPanel.vue'
 
 const toolsStore = useToolsStore()
 
@@ -51,7 +53,9 @@ const toolComponents: Record<string, any> = {
   'time.timestamp': TimestampPanel,
   'text.case': StringCasePanel,
   'encoding.url': UrlEncoderPanel,
-  'crypto.jwt': JwtPanel
+  'crypto.jwt': JwtPanel,
+  'color.converter': ColorConverterPanel,
+  'text.diff': TextDiffPanel
 }
 
 const currentComponent = computed(() => {

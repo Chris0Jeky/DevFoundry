@@ -2,6 +2,45 @@
 
 All notable changes to DevFoundry will be documented in this file.
 
+## [0.4.0] - 2024-01-25
+
+### Added
+
+#### Backend
+- **Color Converter Tool** - Convert between color formats
+  - Support for HEX, RGB, RGBA, HSL, HSLA
+  - Bidirectional conversion (any format to any format)
+  - Short HEX format support (#RGB)
+  - Alpha channel handling
+- **Text Diff Tool** - Compare text line-by-line
+  - Unified diff format (Git-style)
+  - Side-by-side comparison format
+  - Ignore whitespace option
+  - Ignore case option
+  - Longest Common Subsequence algorithm for accurate diffs
+
+#### Frontend
+- **Color Converter Panel** - Interactive color conversion
+  - Live color preview boxes
+  - Native color picker integration
+  - Visual feedback for input and output colors
+- **Text Diff Panel** - Text comparison interface
+  - Dual textarea input (original vs modified)
+  - Format selection (unified/side-by-side)
+  - Configurable comparison options
+  - Monospace output for clear diff visualization
+
+#### Tests
+- Comprehensive test suite for ColorConverterTool (13 test cases)
+- Comprehensive test suite for TextDiffTool (13 test cases)
+- Cover edge cases, error handling, and format conversions
+
+### Technical Details
+- HSL ↔ RGB conversion algorithms
+- Longest Common Subsequence (LCS) for diff computation
+- Regex-based color parsing for multiple formats
+- Support for both line-based and character-based comparisons
+
 ## [0.3.0] - 2024-01-20
 
 ### Added
