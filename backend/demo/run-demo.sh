@@ -105,7 +105,7 @@ show_content "Input (Minified)" "$minified_json" "$YELLOW"
 pause_demo
 
 write_step "Formatting JSON with indentation..."
-formatted_json=$(echo "$minified_json" | dotnet run --project "$CLI_PATH" -- run json.formatter --indent 2)
+formatted_json=$(echo "$minified_json" | dotnet run --project "$CLI_PATH" -- run json.formatter --indentSize 2)
 show_content "Output (Formatted)" "$formatted_json" "$GREEN"
 echo "$formatted_json" > "$OUTPUT_PATH/sample-formatted.json"
 write_success "Saved to: output/sample-formatted.json"
@@ -113,7 +113,7 @@ write_success "Saved to: output/sample-formatted.json"
 pause_demo
 
 write_step "Now minifying the formatted JSON..."
-minified=$(echo "$formatted_json" | dotnet run --project "$CLI_PATH" -- run json.formatter --indent 0)
+minified=$(echo "$formatted_json" | dotnet run --project "$CLI_PATH" -- run json.formatter --minify true)
 show_content "Output (Minified)" "$minified" "$GREEN"
 write_success "JSON successfully formatted and minified!"
 
@@ -133,7 +133,7 @@ show_content "Input (YAML)" "$yaml_content" "$YELLOW"
 pause_demo
 
 write_step "Converting YAML to JSON..."
-converted_json=$(echo "$yaml_content" | dotnet run --project "$CLI_PATH" -- run json.yaml --direction yaml-to-json)
+converted_json=$(echo "$yaml_content" | dotnet run --project "$CLI_PATH" -- run json.yaml --mode yaml-to-json)
 show_content "Output (JSON)" "$converted_json" "$GREEN"
 echo "$converted_json" > "$OUTPUT_PATH/sample-from-yaml.json"
 write_success "Saved to: output/sample-from-yaml.json"
@@ -152,7 +152,7 @@ show_content "Input (Plain Text)" "$message" "$YELLOW"
 pause_demo
 
 write_step "Encoding to Base64..."
-encoded=$(echo "$message" | dotnet run --project "$CLI_PATH" -- run encoding.base64 --operation encode)
+encoded=$(echo "$message" | dotnet run --project "$CLI_PATH" -- run encoding.base64 --mode encode)
 show_content "Output (Base64 Encoded)" "$encoded" "$GREEN"
 echo "$encoded" > "$OUTPUT_PATH/secret-encoded.txt"
 write_success "Saved to: output/secret-encoded.txt"
@@ -160,7 +160,7 @@ write_success "Saved to: output/secret-encoded.txt"
 pause_demo
 
 write_step "Decoding back to plain text..."
-decoded=$(echo "$encoded" | dotnet run --project "$CLI_PATH" -- run encoding.base64 --operation decode)
+decoded=$(echo "$encoded" | dotnet run --project "$CLI_PATH" -- run encoding.base64 --mode decode)
 show_content "Output (Decoded)" "$decoded" "$GREEN"
 write_success "Successfully encoded and decoded!"
 
@@ -239,7 +239,7 @@ show_content "API Response (Raw)" "$api_response" "$YELLOW"
 pause_demo
 
 write_step "Step 2: Format JSON for readability..."
-formatted=$(echo "$api_response" | dotnet run --project "$CLI_PATH" -- run json.formatter --indent 2)
+formatted=$(echo "$api_response" | dotnet run --project "$CLI_PATH" -- run json.formatter --indentSize 2)
 show_content "Formatted Response" "$formatted" "$GREEN"
 
 pause_demo
