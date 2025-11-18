@@ -92,7 +92,7 @@ Show-Content "Input (Minified)" $minifiedJson "DarkYellow"
 Pause-Demo
 
 Write-Step "Formatting JSON with indentation..."
-$formattedJson = $minifiedJson | & dotnet run --project $CliPath -- run json.formatter --indentSize 2
+$formattedJson = $minifiedJson | & dotnet run --project $CliPath -- run json.formatter --param indentSize=2
 Show-Content "Output (Formatted)" $formattedJson "Green"
 $formattedJson | Out-File "$OutputPath/sample-formatted.json" -Encoding utf8
 Write-Success "Saved to: output/sample-formatted.json"
@@ -100,7 +100,7 @@ Write-Success "Saved to: output/sample-formatted.json"
 Pause-Demo
 
 Write-Step "Now minifying the formatted JSON..."
-$minified = $formattedJson | & dotnet run --project $CliPath -- run json.formatter --minify true
+$minified = $formattedJson | & dotnet run --project $CliPath -- run json.formatter --param minify=true
 Show-Content "Output (Minified)" $minified "Green"
 Write-Success "JSON successfully formatted and minified!"
 
@@ -120,7 +120,7 @@ Show-Content "Input (YAML)" $yamlContent "DarkYellow"
 Pause-Demo
 
 Write-Step "Converting YAML to JSON..."
-$convertedJson = $yamlContent | & dotnet run --project $CliPath -- run json.yaml --mode yaml-to-json
+$convertedJson = $yamlContent | & dotnet run --project $CliPath -- run json.yaml --param mode=yaml-to-json
 Show-Content "Output (JSON)" $convertedJson "Green"
 $convertedJson | Out-File "$OutputPath/sample-from-yaml.json" -Encoding utf8
 Write-Success "Saved to: output/sample-from-yaml.json"
@@ -139,7 +139,7 @@ Show-Content "Input (Plain Text)" $message "DarkYellow"
 Pause-Demo
 
 Write-Step "Encoding to Base64..."
-$encoded = $message | & dotnet run --project $CliPath -- run encoding.base64 --mode encode
+$encoded = $message | & dotnet run --project $CliPath -- run encoding.base64 --param mode=encode
 Show-Content "Output (Base64 Encoded)" $encoded "Green"
 $encoded | Out-File "$OutputPath/secret-encoded.txt" -Encoding utf8
 Write-Success "Saved to: output/secret-encoded.txt"
@@ -147,7 +147,7 @@ Write-Success "Saved to: output/secret-encoded.txt"
 Pause-Demo
 
 Write-Step "Decoding back to plain text..."
-$decoded = $encoded | & dotnet run --project $CliPath -- run encoding.base64 --mode decode
+$decoded = $encoded | & dotnet run --project $CliPath -- run encoding.base64 --param mode=decode
 Show-Content "Output (Decoded)" $decoded "Green"
 Write-Success "Successfully encoded and decoded!"
 
@@ -159,7 +159,7 @@ Pause-Demo
 Write-Header "4. UUID Generator (generation.uuid)"
 
 Write-Step "Generating 5 unique UUIDs..."
-$uuids = "" | & dotnet run --project $CliPath -- run generation.uuid --count 5
+$uuids = "" | & dotnet run --project $CliPath -- run generation.uuid --param count=5
 Show-Content "Output (UUIDs)" $uuids "Green"
 $uuids | Out-File "$OutputPath/generated-uuids.txt" -Encoding utf8
 Write-Success "Saved to: output/generated-uuids.txt"
@@ -178,19 +178,19 @@ Show-Content "Input (Message)" $hashMessage "DarkYellow"
 Pause-Demo
 
 Write-Step "Calculating MD5 hash..."
-$md5 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --algorithm md5
+$md5 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --param algorithm=md5
 Show-Content "MD5" $md5 "Cyan"
 
 Write-Step "Calculating SHA-1 hash..."
-$sha1 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --algorithm sha1
+$sha1 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --param algorithm=sha1
 Show-Content "SHA-1" $sha1 "Cyan"
 
 Write-Step "Calculating SHA-256 hash..."
-$sha256 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --algorithm sha256
+$sha256 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --param algorithm=sha256
 Show-Content "SHA-256" $sha256 "Cyan"
 
 Write-Step "Calculating SHA-512 hash..."
-$sha512 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --algorithm sha512
+$sha512 = $hashMessage | & dotnet run --project $CliPath -- run crypto.hash --param algorithm=sha512
 Show-Content "SHA-512" $sha512 "Cyan"
 
 # Save all hashes
@@ -226,19 +226,19 @@ Show-Content "API Response (Raw)" $apiResponse "DarkYellow"
 Pause-Demo
 
 Write-Step "Step 2: Format JSON for readability..."
-$formatted = $apiResponse | & dotnet run --project $CliPath -- run json.formatter --indentSize 2
+$formatted = $apiResponse | & dotnet run --project $CliPath -- run json.formatter --param indentSize=2
 Show-Content "Formatted Response" $formatted "Green"
 
 Pause-Demo
 
 Write-Step "Step 3: Generate batch of UUIDs for user sessions..."
-$sessionIds = "" | & dotnet run --project $CliPath -- run generation.uuid --count 3
+$sessionIds = "" | & dotnet run --project $CliPath -- run generation.uuid --param count=3
 Show-Content "Generated Session IDs" $sessionIds "Cyan"
 
 Pause-Demo
 
 Write-Step "Step 4: Calculate integrity hash of the response..."
-$responseHash = $formatted | & dotnet run --project $CliPath -- run crypto.hash --algorithm sha256
+$responseHash = $formatted | & dotnet run --project $CliPath -- run crypto.hash --param algorithm=sha256
 Show-Content "Response Hash (SHA-256)" $responseHash "Magenta"
 
 # Save pipeline results
