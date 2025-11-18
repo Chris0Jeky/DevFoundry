@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dotnet --list-sdks:*)",
       "Bash(dotnet clean:*)",
-      "Bash(dotnet restore:*)"
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)"
     ],
     "deny": [],
     "ask": []
