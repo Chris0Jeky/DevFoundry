@@ -494,13 +494,14 @@
         // Tool-specific functions
         async function formatJson() {
             const input = document.getElementById('json-input').value;
-            const indent = document.getElementById('json-indent').value;
+            const indentSize = document.getElementById('json-indent').value;
             const output = document.getElementById('json-output');
 
             output.textContent = 'Processing...';
             output.className = 'output';
 
-            const result = await executeTool('json.formatter', input, { indent: indent });
+            const params = indentSize === '0' ? { minify: 'true' } : { indentSize: indentSize };
+            const result = await executeTool('json.formatter', input, params);
 
             if (result.success) {
                 output.textContent = result.outputText;
@@ -513,13 +514,13 @@
 
         async function convertYaml() {
             const input = document.getElementById('yaml-input').value;
-            const direction = document.getElementById('yaml-direction').value;
+            const mode = document.getElementById('yaml-direction').value;
             const output = document.getElementById('yaml-output');
 
             output.textContent = 'Processing...';
             output.className = 'output';
 
-            const result = await executeTool('json.yaml', input, { direction: direction });
+            const result = await executeTool('json.yaml', input, { mode: mode });
 
             if (result.success) {
                 output.textContent = result.outputText;
@@ -537,7 +538,7 @@
             output.textContent = 'Processing...';
             output.className = 'output';
 
-            const result = await executeTool('encoding.base64', input, { operation: 'encode' });
+            const result = await executeTool('encoding.base64', input, { mode: 'encode' });
 
             if (result.success) {
                 output.textContent = result.outputText;
@@ -555,7 +556,7 @@
             output.textContent = 'Processing...';
             output.className = 'output';
 
-            const result = await executeTool('encoding.base64', input, { operation: 'decode' });
+            const result = await executeTool('encoding.base64', input, { mode: 'decode' });
 
             if (result.success) {
                 output.textContent = result.outputText;
@@ -612,7 +613,7 @@
 
             // Step 1: Format JSON
             output.textContent += 'Step 1: Formatting JSON...\n';
-            const formatted = await executeTool('json.formatter', apiResponse, { indent: '2' });
+            const formatted = await executeTool('json.formatter', apiResponse, { indentSize: '2' });
             if (!formatted.success) {
                 output.textContent += `Error: ${formatted.errorMessage}\n`;
                 output.className = 'output error';
@@ -642,7 +643,7 @@
 
             // Step 4: Base64 encode
             output.textContent += 'Step 4: Encoding hash...\n';
-            const encoded = await executeTool('encoding.base64', hash.outputText, { operation: 'encode' });
+            const encoded = await executeTool('encoding.base64', hash.outputText, { mode: 'encode' });
             if (!encoded.success) {
                 output.textContent += `Error: ${encoded.errorMessage}\n`;
                 output.className = 'output error';
