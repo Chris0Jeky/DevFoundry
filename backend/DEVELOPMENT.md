@@ -50,6 +50,29 @@ dotnet run
 cd ../..
 ```
 
+### Try the Interactive Demo (Recommended!)
+
+After setup, run the demo to see all tools in action and understand how they work:
+
+```bash
+# Quick demo (command-line with beautiful colors)
+cd demo
+.\run-demo.ps1 -Fast              # Windows
+./run-demo.sh --fast               # Linux/macOS
+
+# Interactive web demo
+cd src/DevFoundry.Api && dotnet run
+# Then open demo/web-demo.html in your browser
+```
+
+The demo showcases:
+- All 5 tools with real sample data
+- Input/output examples for each tool
+- A complete pipeline workflow
+- Generated output files in `demo/output/`
+
+**See [demo/README.md](demo/README.md) for complete documentation.**
+
 ### Recommended IDE Extensions
 - **Visual Studio Code**:
   - C# Dev Kit
