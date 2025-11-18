@@ -13,7 +13,9 @@
       "Bash(/tmp/test-404.json)",
       "Bash(taskkill:*)",
       "Bash(pkill:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(pwsh ./run-demo.ps1 -Fast -NoPause)",
+      "Bash(bash ./run-demo.sh:*)"
     ],
     "deny": [],
     "ask": []
