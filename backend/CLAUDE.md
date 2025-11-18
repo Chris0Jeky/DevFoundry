@@ -85,6 +85,23 @@ dotnet run
 ```
 API will be available at `http://localhost:5000`
 
+### Cleanup Orphaned Processes
+If build fails with "file is locked" errors, orphaned DevFoundry processes may be running:
+
+```bash
+# Windows (PowerShell)
+.\scripts\cleanup-processes.ps1
+
+# Linux/macOS
+./scripts/cleanup-processes.sh
+
+# Or manually:
+# Windows: taskkill /F /IM DevFoundry.Api.exe
+# Linux/macOS: pkill -f DevFoundry
+```
+
+See DEVELOPMENT.md (Troubleshooting #6) for details.
+
 ## Creating New Tools
 
 1. Implement `ITool` interface in a new class
