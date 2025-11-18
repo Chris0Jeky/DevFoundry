@@ -22,7 +22,8 @@
       "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& {.\\run-demo.ps1 -Fast -NoPause}\")",
       "Bash(powershell.exe -ExecutionPolicy Bypass -File ./test-demo.ps1)",
       "Bash(dos2unix:*)",
-      "Bash(unix2dos run-demo.ps1)"
+      "Bash(unix2dos run-demo.ps1)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File ./run-demo.ps1 -Fast -NoPause)"
     ],
     "deny": [],
     "ask": []
