@@ -22,6 +22,10 @@ builder.Services.AddTool<JsonYamlConverterTool>();
 builder.Services.AddTool<Base64Tool>();
 builder.Services.AddTool<UuidTool>();
 builder.Services.AddTool<HashTool>();
+builder.Services.AddTool<TimestampConverterTool>();
+builder.Services.AddTool<StringCaseConverterTool>();
+builder.Services.AddTool<UrlEncoderTool>();
+builder.Services.AddTool<JwtDecoderTool>();
 
 // Register runtime
 builder.Services.AddDevFoundryRuntime();
