@@ -242,7 +242,7 @@ $responseHash = $formatted | & dotnet run --project $CliPath -- run crypto.hash 
 Show-Content "Response Hash (SHA-256)" $responseHash "Magenta"
 
 # Save pipeline results
-@"
+$pipelineResults = @"
 =================================================
 Pipeline Results - $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 =================================================
@@ -257,7 +257,8 @@ INTEGRITY HASH (SHA-256):
 $responseHash
 
 =================================================
-"@ | Out-File "$OutputPath/pipeline-results.txt" -Encoding utf8
+"@
+$pipelineResults | Out-File "$OutputPath/pipeline-results.txt" -Encoding utf8
 Write-Success "Pipeline results saved to: output/pipeline-results.txt"
 
 Pause-Demo
