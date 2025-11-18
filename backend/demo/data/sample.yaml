@@ -1,0 +1,19 @@
+name: DevFoundry
+version: 0.1.0
+description: Offline developer toolkit
+features:
+  - JSON formatting
+  - YAML conversion
+  - Base64 encoding
+  - UUID generation
+  - Hash calculation
+config:
+  port: 5000
+  environment: development
+  cors:
+    origins:
+      - http://localhost:5173
+      - http://localhost:5174
+metadata:
+  created: 2025-11-18
+  author: DevFoundry Team
