@@ -2,7 +2,48 @@
 
 All notable changes to DevFoundry will be documented in this file.
 
-## [0.2.0] - 2024-02-15
+## [0.3.0] - 2024-01-20
+
+### Added
+
+#### Backend
+- **Spectre.Console CLI Integration** - Rich, colorful terminal output
+  - Beautiful tables for tool listings
+  - Colored panels for tool descriptions
+  - Enhanced error messages with markup
+  - Better visual hierarchy for all CLI commands
+- **Plugin Discovery System** - Load tools from external assemblies
+  - Automatic discovery of tools from plugins directory
+  - Reflection-based tool loading
+  - Support for external DLL files
+- **Plugin Configuration** - Control which tools are loaded
+  - Enable/disable specific tools by ID
+  - Configure plugins directory location
+  - Whitelist/blacklist tool filtering
+
+#### Frontend
+- **Dark Mode** - Full dark theme support
+  - Theme toggle (light/dark/auto modes)
+  - Automatic system preference detection
+  - Smooth transitions between themes
+  - Persistent theme preference storage
+- **Tool Favorites** - Mark favorite tools with star button
+  - Click-to-favorite on any tool
+  - Visual indicator (gold star)
+  - Persistent favorites storage
+- **Usage History Tracking** - Automatic tracking of tool usage
+  - Records when tools are used
+  - Stores input preview
+  - Usage statistics per tool
+  - Recent tools list
+
+### Technical Details
+- Spectre.Console v0.49.1 for rich CLI output
+- LocalStorage-based persistence for UI features
+- CSS variables for themeable design system
+- Pinia stores for favorites and history management
+
+## [0.2.0] - 2024-01-15
 
 ### Added
 

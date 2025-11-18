@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { toolsApi } from '@/api/toolsApi'
 import type { ToolDescriptor, ToolRunRequest, ToolRunResult } from '@/types/tool'
+import { useFavoritesStore } from './favoritesStore'
 
 export const useToolsStore = defineStore('tools', () => {
   const tools = ref<ToolDescriptor[]>([])
@@ -51,6 +52,11 @@ export const useToolsStore = defineStore('tools', () => {
     error.value = null
     try {
       const result = await toolsApi.runTool(selectedToolId.value, request)
+
+      // Track tool usage in history
+      const favoritesStore = useFavoritesStore()
+      favoritesStore.addToHistory(selectedToolId.value, request.text)
+
       return result
     } catch (e: any) {
       error.value = e.message || 'Failed to run tool'

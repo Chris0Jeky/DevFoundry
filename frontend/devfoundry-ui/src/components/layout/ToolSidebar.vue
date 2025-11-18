@@ -28,10 +28,19 @@
           v-for="tool in tools"
           :key="tool.id"
           :class="['tool-item', { active: toolsStore.selectedToolId === tool.id }]"
-          @click="selectTool(tool.id)"
         >
-          <div class="tool-name">{{ tool.displayName }}</div>
-          <div class="tool-description">{{ tool.description }}</div>
+          <div class="tool-content" @click="selectTool(tool.id)">
+            <div class="tool-name">{{ tool.displayName }}</div>
+            <div class="tool-description">{{ tool.description }}</div>
+          </div>
+          <button
+            class="favorite-button"
+            :class="{ favorited: favoritesStore.isFavorite(tool.id) }"
+            @click.stop="favoritesStore.toggleFavorite(tool.id)"
+            :title="favoritesStore.isFavorite(tool.id) ? 'Remove from favorites' : 'Add to favorites'"
+          >
+            ★
+          </button>
         </div>
       </div>
     </div>
@@ -42,9 +51,11 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToolsStore } from '@/stores/toolsStore'
+import { useFavoritesStore } from '@/stores/favoritesStore'
 
 const router = useRouter()
 const toolsStore = useToolsStore()
+const favoritesStore = useFavoritesStore()
 const searchQuery = ref('')
 
 const filteredToolsByCategory = computed(() => {
@@ -129,8 +140,10 @@ function selectTool(toolId: string) {
 }
 
 .tool-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
-  cursor: pointer;
   transition: background-color 0.15s;
 }
 
@@ -138,9 +151,22 @@ function selectTool(toolId: string) {
   background-color: #f3f4f6;
 }
 
+:global(.dark) .tool-item:hover {
+  background-color: #334155;
+}
+
 .tool-item.active {
   background-color: #dbeafe;
   border-left: 3px solid var(--color-primary);
+}
+
+:global(.dark) .tool-item.active {
+  background-color: #1e3a8a;
+}
+
+.tool-content {
+  flex: 1;
+  cursor: pointer;
 }
 
 .tool-name {
@@ -153,5 +179,32 @@ function selectTool(toolId: string) {
   font-size: 0.75rem;
   color: var(--color-text-secondary);
   margin-top: 0.25rem;
+}
+
+.favorite-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #d1d5db;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.favorite-button:hover {
+  transform: scale(1.2);
+}
+
+.favorite-button.favorited {
+  color: #fbbf24;
+}
+
+:global(.dark) .favorite-button {
+  color: #64748b;
+}
+
+:global(.dark) .favorite-button.favorited {
+  color: #fcd34d;
 }
 </style>

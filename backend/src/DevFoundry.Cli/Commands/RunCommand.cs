@@ -2,6 +2,7 @@ using System.CommandLine;
 using System.Text;
 using DevFoundry.Core;
 using DevFoundry.Runtime;
+using Spectre.Console;
 
 namespace DevFoundry.Cli.Commands;
 
@@ -41,8 +42,8 @@ public class RunCommand : Command
 
             if (tool == null)
             {
-                Console.Error.WriteLine($"Error: Tool '{toolId}' not found.");
-                Console.Error.WriteLine("Use 'devfoundry list' to see available tools.");
+                AnsiConsole.MarkupLine($"[red]Error:[/] Tool '[yellow]{toolId}[/]' not found.");
+                AnsiConsole.MarkupLine("[dim]Use 'devfoundry list' to see available tools.[/]");
                 Environment.Exit(2);
                 return;
             }
@@ -54,7 +55,7 @@ public class RunCommand : Command
             {
                 if (!file.Exists)
                 {
-                    Console.Error.WriteLine($"Error: File '{file.FullName}' not found.");
+                    AnsiConsole.MarkupLine($"[red]Error:[/] File '[yellow]{file.FullName}[/]' not found.");
                     Environment.Exit(3);
                     return;
                 }
@@ -105,11 +106,13 @@ public class RunCommand : Command
 
             if (result.Success)
             {
+                // Output the result (without color markup for piping compatibility)
                 Console.WriteLine(result.OutputText);
 
                 if (!string.IsNullOrEmpty(result.SecondaryOutputText))
                 {
-                    Console.WriteLine("\n--- Secondary Output ---");
+                    AnsiConsole.WriteLine();
+                    AnsiConsole.MarkupLine("[dim]--- Secondary Output ---[/]");
                     Console.WriteLine(result.SecondaryOutputText);
                 }
 
@@ -117,7 +120,7 @@ public class RunCommand : Command
             }
             else
             {
-                Console.Error.WriteLine($"Error: {result.ErrorMessage}");
+                AnsiConsole.MarkupLine($"[red]Error:[/] {result.ErrorMessage}");
                 Environment.Exit(1);
             }
         }, toolIdArgument, textOption, fileOption, paramOption);

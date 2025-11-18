@@ -76,12 +76,19 @@ Then open `http://localhost:5173` in your browser.
 * [x] Comprehensive test coverage
 * [x] Enhanced tool categorization
 
+### Completed (v0.3.0)
+* [x] CLI UX improvements with Spectre.Console (colored output, rich formatting, tables)
+* [x] Plugin discovery from external assemblies
+* [x] Plugin loading configuration support
+* [x] Dark mode with theme toggle (light/dark/auto)
+* [x] Tool favorites with star button
+* [x] Tool usage history tracking
+
 ### Future
-* [ ] Plugin discovery for external tools
-* [ ] CLI UX improvements (Spectre.Console integration)
 * [ ] Desktop packaging (Tauri/Electron)
-* [ ] Dark mode
-* [ ] Tool favorites and history
+* [ ] Tool configuration presets
+* [ ] Export/import tool history
+* [ ] Batch processing support
 
 ## Documentation
 
