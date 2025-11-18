@@ -64,7 +64,7 @@ Clear-Host
 Write-Host @"
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
-║              🛠️  DevFoundry Demo Showcase  🛠️                ║
+║              DevFoundry Demo Showcase                        ║
 ║                                                              ║
 ║           Offline Developer Toolkit - .NET 8                ║
 ║                                                              ║
@@ -265,7 +265,7 @@ Pause-Demo
 # ============================================================
 # FINALE
 # ============================================================
-Write-Header "🎉 Demo Complete!"
+Write-Header "Demo Complete!"
 
 Write-Success "All tools demonstrated successfully!`n"
 
