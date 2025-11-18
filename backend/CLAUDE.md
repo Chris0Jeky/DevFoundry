@@ -110,3 +110,59 @@ Tool IDs follow the pattern: `category.toolname` (e.g., `json.formatter`, `hash.
 - System.CommandLine (CLI)
 - ASP.NET Core Minimal API (API)
 - Microsoft.Extensions.DependencyInjection (DI)
+- xUnit (Testing)
+- YamlDotNet (JSON/YAML conversion)
+
+## Known Issues
+
+### 🔴 CRITICAL: JsonYamlConverterTool Bug
+**Status**: OPEN (as of 2025-11-18)
+**Tool**: `json.yaml`
+**Issue**: JSON-to-YAML conversion produces incorrect output ("valueKind: Object" instead of proper YAML)
+**Location**: `src/DevFoundry.Tools.Basic/JsonYamlConverterTool.cs:76`
+**Root Cause**: `JsonSerializer.Deserialize<object>(json)` returns `JsonElement` instead of deserialized object
+**Impact**: HIGH - JSON-to-YAML feature is non-functional
+**YAML-to-JSON**: Works correctly ✅
+
+**Recommended Fix**:
+```csharp
+// Instead of:
+var jsonObject = JsonSerializer.Deserialize<object>(json);
+
+// Use:
+using var doc = JsonDocument.Parse(json);
+var jsonElement = doc.RootElement;
+// Pass JsonElement directly to YamlDotNet with proper configuration
+```
+
+**Before fixing**: Add comprehensive tests for JsonYamlConverterTool (currently has ZERO tests)
+
+See TEST_REPORT.md for complete details.
+
+## Test Coverage Status
+
+**Last Tested**: 2025-11-18
+**Overall Coverage**: ~45% (Target: 80%)
+
+| Project | Coverage | Tests | Status |
+|---------|----------|-------|--------|
+| DevFoundry.Core | ~50% | 2 | ⚠️ Needs more |
+| DevFoundry.Runtime | 0% | 0 | ❌ No tests |
+| DevFoundry.Tools.Basic | ~85% | 14 | ⚠️ JsonYaml missing |
+| DevFoundry.Cli | 0% | 0 | ❌ No tests |
+| DevFoundry.Api | 0% | 0 | ❌ No tests |
+
+**Missing Tests**:
+- JsonYamlConverterTool (0 tests) - **HIGH PRIORITY**
+- DevFoundry.Runtime (0 tests) - **HIGH PRIORITY**
+- DevFoundry.Api (0 tests) - **MEDIUM PRIORITY**
+- DevFoundry.Cli (0 tests) - **MEDIUM PRIORITY**
+
+## Important Files
+
+- **CLAUDE.md** (this file) - Working with this codebase
+- **MASTER_PLAN.md** - Implementation roadmap and task list
+- **DEVELOPMENT.md** - Development practices and guides
+- **TEST_REPORT.md** - Latest test results and findings
+- **REVIEW_SUMMARY.md** - Code review summary
+- **README.md** - Project overview
