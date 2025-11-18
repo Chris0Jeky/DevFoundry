@@ -1,4 +1,3 @@
-using System.Net;
 using DevFoundry.Core;
 
 namespace DevFoundry.Tools.Basic;
@@ -44,8 +43,8 @@ public sealed class UrlEncoderTool : ITool
         {
             string result = mode switch
             {
-                "encode" => WebUtility.UrlEncode(input.Text),
-                "decode" => WebUtility.UrlDecode(input.Text),
+                "encode" => Uri.EscapeDataString(input.Text),
+                "decode" => Uri.UnescapeDataString(input.Text),
                 _ => throw new ArgumentException($"Invalid mode '{mode}'. Use 'encode' or 'decode'.")
             };
 
