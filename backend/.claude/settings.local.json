@@ -19,7 +19,8 @@
       "Bash(pwsh -File ./cleanup-processes.ps1)",
       "Bash(powershell.exe -ExecutionPolicy Bypass -File ./cleanup-processes.ps1)",
       "Bash(powershell.exe -ExecutionPolicy Bypass -Command \".\\run-demo.ps1 -Fast -NoPause\")",
-      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& {.\\run-demo.ps1 -Fast -NoPause}\")"
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& {.\\run-demo.ps1 -Fast -NoPause}\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File ./test-demo.ps1)"
     ],
     "deny": [],
     "ask": []
