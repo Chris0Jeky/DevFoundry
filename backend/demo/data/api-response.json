@@ -1,0 +1,1 @@
+{"status":"success","data":{"userId":"550e8400-e29b-41d4-a716-446655440000","username":"demo_user","email":"demo@devfoundry.dev","roles":["admin","developer"],"permissions":["read","write","execute"],"lastLogin":"2025-11-18T10:30:00Z","stats":{"projectsCreated":42,"toolsUsed":156,"apiCalls":1337}},"timestamp":"2025-11-18T12:00:00Z"}
