@@ -279,10 +279,10 @@ Write-Host "  • output/pipeline-results.txt" -ForegroundColor Gray
 
 Write-Host "`n"
 Write-Info "Next steps:"
-Write-Host "  • Try the tools yourself: cd ../src/DevFoundry.Cli && dotnet run -- list" -ForegroundColor Gray
-Write-Host "  • View the API: cd ../src/DevFoundry.Api && dotnet run" -ForegroundColor Gray
-Write-Host "  • Open the web demo: demo/web-demo.html" -ForegroundColor Gray
+Write-Host "  - Try the tools yourself: cd ../src/DevFoundry.Cli; dotnet run -- list" -ForegroundColor Gray
+Write-Host "  - View the API: cd ../src/DevFoundry.Api; dotnet run" -ForegroundColor Gray
+Write-Host "  - Open the web demo: demo/web-demo.html" -ForegroundColor Gray
 
 Write-Host "`n"
-Write-Host "Thank you for exploring DevFoundry! 🛠️" -ForegroundColor Cyan
+Write-Host "Thank you for exploring DevFoundry!" -ForegroundColor Cyan
 Write-Host ""
