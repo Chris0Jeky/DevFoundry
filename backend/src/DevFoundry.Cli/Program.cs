@@ -13,6 +13,10 @@ services.AddTool<JsonYamlConverterTool>();
 services.AddTool<Base64Tool>();
 services.AddTool<UuidTool>();
 services.AddTool<HashTool>();
+services.AddTool<TimestampConverterTool>();
+services.AddTool<StringCaseConverterTool>();
+services.AddTool<UrlEncoderTool>();
+services.AddTool<JwtDecoderTool>();
 
 // Register runtime
 services.AddDevFoundryRuntime();
