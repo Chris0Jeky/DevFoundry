@@ -86,7 +86,7 @@ Pause-Demo
 Write-Header "1. JSON Formatter (json.formatter)"
 
 Write-Step "Loading minified JSON..."
-$minifiedJson = Get-Content "$DataPath/sample.json" -Raw
+$minifiedJson = Get-Content (Join-Path $DataPath "sample.json") -Raw
 Show-Content "Input (Minified)" $minifiedJson "DarkYellow"
 
 Pause-Demo
@@ -94,7 +94,7 @@ Pause-Demo
 Write-Step "Formatting JSON with indentation..."
 $formattedJson = $minifiedJson | & dotnet run --project $CliPath -- run json.formatter --param indentSize=2
 Show-Content "Output (Formatted)" $formattedJson "Green"
-$formattedJson | Out-File "$OutputPath/sample-formatted.json" -Encoding utf8
+$formattedJson | Out-File (Join-Path $OutputPath "sample-formatted.json") -Encoding utf8
 Write-Success "Saved to: output/sample-formatted.json"
 
 Pause-Demo
@@ -114,7 +114,7 @@ Write-Header "2. JSON/YAML Converter (json.yaml)"
 Write-Info "⚠️  Note: JSON-to-YAML has a known bug. Demonstrating YAML-to-JSON only."
 
 Write-Step "Loading YAML configuration..."
-$yamlContent = Get-Content "$DataPath/sample.yaml" -Raw
+$yamlContent = Get-Content (Join-Path $DataPath "sample.yaml") -Raw
 Show-Content "Input (YAML)" $yamlContent "DarkYellow"
 
 Pause-Demo
@@ -122,7 +122,7 @@ Pause-Demo
 Write-Step "Converting YAML to JSON..."
 $convertedJson = $yamlContent | & dotnet run --project $CliPath -- run json.yaml --param mode=yaml-to-json
 Show-Content "Output (JSON)" $convertedJson "Green"
-$convertedJson | Out-File "$OutputPath/sample-from-yaml.json" -Encoding utf8
+$convertedJson | Out-File (Join-Path $OutputPath "sample-from-yaml.json") -Encoding utf8
 Write-Success "Saved to: output/sample-from-yaml.json"
 
 Pause-Demo
@@ -133,7 +133,7 @@ Pause-Demo
 Write-Header "3. Base64 Encoder/Decoder (encoding.base64)"
 
 Write-Step "Loading secret message..."
-$message = Get-Content "$DataPath/secret.txt" -Raw
+$message = Get-Content (Join-Path $DataPath "secret.txt") -Raw
 Show-Content "Input (Plain Text)" $message "DarkYellow"
 
 Pause-Demo
@@ -141,7 +141,7 @@ Pause-Demo
 Write-Step "Encoding to Base64..."
 $encoded = $message | & dotnet run --project $CliPath -- run encoding.base64 --param mode=encode
 Show-Content "Output (Base64 Encoded)" $encoded "Green"
-$encoded | Out-File "$OutputPath/secret-encoded.txt" -Encoding utf8
+$encoded | Out-File (Join-Path $OutputPath "secret-encoded.txt") -Encoding utf8
 Write-Success "Saved to: output/secret-encoded.txt"
 
 Pause-Demo
@@ -161,7 +161,7 @@ Write-Header "4. UUID Generator (generation.uuid)"
 Write-Step "Generating 5 unique UUIDs..."
 $uuids = "" | & dotnet run --project $CliPath -- run generation.uuid --param count=5
 Show-Content "Output (UUIDs)" $uuids "Green"
-$uuids | Out-File "$OutputPath/generated-uuids.txt" -Encoding utf8
+$uuids | Out-File (Join-Path $OutputPath "generated-uuids.txt") -Encoding utf8
 Write-Success "Saved to: output/generated-uuids.txt"
 
 Pause-Demo
@@ -172,7 +172,7 @@ Pause-Demo
 Write-Header "5. Hash Calculator (crypto.hash)"
 
 Write-Step "Loading message for hashing..."
-$hashMessage = Get-Content "$DataPath/message.txt" -Raw
+$hashMessage = Get-Content (Join-Path $DataPath "message.txt") -Raw
 Show-Content "Input (Message)" $hashMessage "DarkYellow"
 
 Pause-Demo
@@ -201,7 +201,7 @@ MD5:     $md5
 SHA-1:   $sha1
 SHA-256: $sha256
 SHA-512: $sha512
-"@ | Out-File "$OutputPath/message-hashes.txt" -Encoding utf8
+"@ | Out-File (Join-Path $OutputPath "message-hashes.txt") -Encoding utf8
 Write-Success "Saved to: output/message-hashes.txt"
 
 Pause-Demo
@@ -220,7 +220,7 @@ Write-Host "  4. Calculate hash of the formatted output`n" -ForegroundColor Gray
 Pause-Demo
 
 Write-Step "Step 1: Load API response..."
-$apiResponse = Get-Content "$DataPath/api-response.json" -Raw
+$apiResponse = Get-Content (Join-Path $DataPath "api-response.json") -Raw
 Show-Content "API Response (Raw)" $apiResponse "DarkYellow"
 
 Pause-Demo
@@ -258,7 +258,7 @@ $responseHash
 
 =================================================
 "@
-$pipelineResults | Out-File "$OutputPath/pipeline-results.txt" -Encoding utf8
+$pipelineResults | Out-File (Join-Path $OutputPath "pipeline-results.txt") -Encoding utf8
 Write-Success "Pipeline results saved to: output/pipeline-results.txt"
 
 Pause-Demo
