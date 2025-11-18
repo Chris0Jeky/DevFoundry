@@ -102,6 +102,22 @@ If build fails with "file is locked" errors, orphaned DevFoundry processes may b
 
 See DEVELOPMENT.md (Troubleshooting #6) for details.
 
+### Running the Interactive Demo
+Try all tools with beautiful visual output:
+
+```bash
+# Command-line demo (recommended)
+cd demo
+.\run-demo.ps1 -Fast              # Windows
+./run-demo.sh --fast               # Linux/macOS
+
+# Web demo (interactive)
+cd src/DevFoundry.Api && dotnet run
+# Then open demo/web-demo.html in browser
+```
+
+See **demo/README.md** for complete demo documentation.
+
 ## Creating New Tools
 
 1. Implement `ITool` interface in a new class
