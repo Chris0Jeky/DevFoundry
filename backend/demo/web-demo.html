@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevFoundry Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .status.connected {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status.disconnected {
+            background: #f44336;
+            color: white;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tool-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .tool-title {
+            color: #333;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .tool-id {
+            color: #999;
+            font-size: 0.85em;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .output {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .output.success {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+            color: #2e7d32;
+        }
+
+        .output.error {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pipeline {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .pipeline-header {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .pipeline-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠️ DevFoundry Interactive Demo</h1>
+            <p class="subtitle">Offline Developer Toolkit - Try it live!</p>
+            <div id="apiStatus" class="status disconnected">API: Disconnected</div>
+        </header>
+
+        <div class="tools-grid">
+            <!-- JSON Formatter -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">📝</div>
+                    <div>
+                        <div class="tool-title">JSON Formatter</div>
+                        <div class="tool-id">json.formatter</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Input JSON:</label>
+                    <textarea id="json-input" rows="4" placeholder='{"name":"test","value":123}'></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Indentation:</label>
+                    <select id="json-indent">
+                        <option value="0">Minified (0 spaces)</option>
+                        <option value="2" selected>2 spaces</option>
+                        <option value="4">4 spaces</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="formatJson()">Format JSON</button>
+                    <button class="btn-secondary" onclick="loadSample('json')">Load Sample</button>
+                </div>
+                <div id="json-output" class="output">Output will appear here...</div>
+            </div>
+
+            <!-- YAML Converter -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🔄</div>
+                    <div>
+                        <div class="tool-title">YAML Converter</div>
+                        <div class="tool-id">json.yaml</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Input:</label>
+                    <textarea id="yaml-input" rows="4" placeholder="name: test&#10;value: 123"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Direction:</label>
+                    <select id="yaml-direction">
+                        <option value="yaml-to-json">YAML to JSON</option>
+                        <option value="json-to-yaml">JSON to YAML (⚠️ Known Bug)</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="convertYaml()">Convert</button>
+                    <button class="btn-secondary" onclick="loadSample('yaml')">Load Sample</button>
+                </div>
+                <div id="yaml-output" class="output">Output will appear here...</div>
+            </div>
+
+            <!-- Base64 Encoder -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🔐</div>
+                    <div>
+                        <div class="tool-title">Base64 Encoder</div>
+                        <div class="tool-id">encoding.base64</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Input Text:</label>
+                    <textarea id="base64-input" rows="4" placeholder="Enter text to encode/decode"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="encodeBase64()">Encode</button>
+                    <button class="btn-primary" onclick="decodeBase64()">Decode</button>
+                    <button class="btn-secondary" onclick="loadSample('base64')">Load Sample</button>
+                </div>
+                <div id="base64-output" class="output">Output will appear here...</div>
+            </div>
+
+            <!-- UUID Generator -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🎲</div>
+                    <div>
+                        <div class="tool-title">UUID Generator</div>
+                        <div class="tool-id">generation.uuid</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Number of UUIDs (1-100):</label>
+                    <select id="uuid-count">
+                        <option value="1">1 UUID</option>
+                        <option value="3">3 UUIDs</option>
+                        <option value="5" selected>5 UUIDs</option>
+                        <option value="10">10 UUIDs</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateUuid()">Generate UUIDs</button>
+                </div>
+                <div id="uuid-output" class="output">Output will appear here...</div>
+            </div>
+
+            <!-- Hash Calculator -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🔢</div>
+                    <div>
+                        <div class="tool-title">Hash Calculator</div>
+                        <div class="tool-id">crypto.hash</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Input Text:</label>
+                    <textarea id="hash-input" rows="4" placeholder="Enter text to hash"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Algorithm:</label>
+                    <select id="hash-algorithm">
+                        <option value="md5">MD5</option>
+                        <option value="sha1">SHA-1</option>
+                        <option value="sha256" selected>SHA-256</option>
+                        <option value="sha512">SHA-512</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="calculateHash()">Calculate Hash</button>
+                    <button class="btn-secondary" onclick="loadSample('hash')">Load Sample</button>
+                </div>
+                <div id="hash-output" class="output">Output will appear here...</div>
+            </div>
+
+            <!-- Pipeline Demo -->
+            <div class="tool-card" style="grid-column: 1 / -1;">
+                <div class="tool-header">
+                    <div class="tool-icon">🔗</div>
+                    <div>
+                        <div class="tool-title">Pipeline Demo</div>
+                        <div class="tool-id">Multiple tools in sequence</div>
+                    </div>
+                </div>
+                <div class="pipeline-steps">
+                    <div class="pipeline-step">
+                        <div class="step-number">1</div>
+                        <div>Load sample API response → Format JSON (2 spaces)</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">2</div>
+                        <div>Generate 3 UUIDs for session IDs</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">3</div>
+                        <div>Calculate SHA-256 hash of formatted response</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-number">4</div>
+                        <div>Encode the hash in Base64</div>
+                    </div>
+                </div>
+                <div class="button-group" style="margin-top: 20px;">
+                    <button class="btn-primary" onclick="runPipeline()">Run Pipeline Demo</button>
+                </div>
+                <div id="pipeline-output" class="output" style="margin-top: 15px;">Pipeline output will appear here...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>DevFoundry - Offline Developer Toolkit | .NET 8</p>
+            <p>Make sure the API is running: <code>cd ../src/DevFoundry.Api && dotnet run</code></p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        // Check API status on load
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/tools`);
+                if (response.ok) {
+                    document.getElementById('apiStatus').className = 'status connected';
+                    document.getElementById('apiStatus').textContent = 'API: Connected ✓';
+                }
+            } catch (error) {
+                document.getElementById('apiStatus').className = 'status disconnected';
+                document.getElementById('apiStatus').textContent = 'API: Disconnected (Start the API first)';
+            }
+        }
+
+        // Generic tool execution
+        async function executeTool(toolId, input, parameters = {}) {
+            try {
+                const response = await fetch(`${API_BASE}/tools/${toolId}/run`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: input,
+                        parameters: parameters
+                    })
+                });
+
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                return {
+                    success: false,
+                    errorMessage: `Network error: ${error.message}. Make sure the API is running.`
+                };
+            }
+        }
+
+        // Tool-specific functions
+        async function formatJson() {
+            const input = document.getElementById('json-input').value;
+            const indent = document.getElementById('json-indent').value;
+            const output = document.getElementById('json-output');
+
+            output.textContent = 'Processing...';
+            output.className = 'output';
+
+            const result = await executeTool('json.formatter', input, { indent: indent });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function convertYaml() {
+            const input = document.getElementById('yaml-input').value;
+            const direction = document.getElementById('yaml-direction').value;
+            const output = document.getElementById('yaml-output');
+
+            output.textContent = 'Processing...';
+            output.className = 'output';
+
+            const result = await executeTool('json.yaml', input, { direction: direction });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function encodeBase64() {
+            const input = document.getElementById('base64-input').value;
+            const output = document.getElementById('base64-output');
+
+            output.textContent = 'Processing...';
+            output.className = 'output';
+
+            const result = await executeTool('encoding.base64', input, { operation: 'encode' });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function decodeBase64() {
+            const input = document.getElementById('base64-input').value;
+            const output = document.getElementById('base64-output');
+
+            output.textContent = 'Processing...';
+            output.className = 'output';
+
+            const result = await executeTool('encoding.base64', input, { operation: 'decode' });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function generateUuid() {
+            const count = document.getElementById('uuid-count').value;
+            const output = document.getElementById('uuid-output');
+
+            output.textContent = 'Generating...';
+            output.className = 'output';
+
+            const result = await executeTool('generation.uuid', '', { count: count });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function calculateHash() {
+            const input = document.getElementById('hash-input').value;
+            const algorithm = document.getElementById('hash-algorithm').value;
+            const output = document.getElementById('hash-output');
+
+            output.textContent = 'Calculating...';
+            output.className = 'output';
+
+            const result = await executeTool('crypto.hash', input, { algorithm: algorithm });
+
+            if (result.success) {
+                output.textContent = result.outputText;
+                output.className = 'output success';
+            } else {
+                output.textContent = `Error: ${result.errorMessage}`;
+                output.className = 'output error';
+            }
+        }
+
+        async function runPipeline() {
+            const output = document.getElementById('pipeline-output');
+            output.textContent = 'Running pipeline...\n\n';
+            output.className = 'output';
+
+            const apiResponse = '{"status":"success","userId":"550e8400-e29b-41d4-a716-446655440000","username":"demo_user"}';
+
+            // Step 1: Format JSON
+            output.textContent += 'Step 1: Formatting JSON...\n';
+            const formatted = await executeTool('json.formatter', apiResponse, { indent: '2' });
+            if (!formatted.success) {
+                output.textContent += `Error: ${formatted.errorMessage}\n`;
+                output.className = 'output error';
+                return;
+            }
+            output.textContent += `✓ Formatted:\n${formatted.outputText}\n\n`;
+
+            // Step 2: Generate UUIDs
+            output.textContent += 'Step 2: Generating UUIDs...\n';
+            const uuids = await executeTool('generation.uuid', '', { count: '3' });
+            if (!uuids.success) {
+                output.textContent += `Error: ${uuids.errorMessage}\n`;
+                output.className = 'output error';
+                return;
+            }
+            output.textContent += `✓ Session IDs:\n${uuids.outputText}\n\n`;
+
+            // Step 3: Hash
+            output.textContent += 'Step 3: Calculating hash...\n';
+            const hash = await executeTool('crypto.hash', formatted.outputText, { algorithm: 'sha256' });
+            if (!hash.success) {
+                output.textContent += `Error: ${hash.errorMessage}\n`;
+                output.className = 'output error';
+                return;
+            }
+            output.textContent += `✓ SHA-256:\n${hash.outputText}\n\n`;
+
+            // Step 4: Base64 encode
+            output.textContent += 'Step 4: Encoding hash...\n';
+            const encoded = await executeTool('encoding.base64', hash.outputText, { operation: 'encode' });
+            if (!encoded.success) {
+                output.textContent += `Error: ${encoded.errorMessage}\n`;
+                output.className = 'output error';
+                return;
+            }
+            output.textContent += `✓ Base64:\n${encoded.outputText}\n\n`;
+
+            output.textContent += '═══════════════════════════════════\n';
+            output.textContent += '✓ Pipeline completed successfully!\n';
+            output.className = 'output success';
+        }
+
+        // Sample data loaders
+        function loadSample(type) {
+            const samples = {
+                json: '{"name":"DevFoundry","version":"0.1.0","features":["JSON","YAML","Base64","UUID","Hash"]}',
+                yaml: 'name: DevFoundry\nversion: 0.1.0\nfeatures:\n  - JSON\n  - YAML\n  - Base64',
+                base64: 'Hello, DevFoundry! This is a sample message.',
+                hash: 'Hello, DevFoundry! This is a sample message.'
+            };
+
+            if (type === 'json') {
+                document.getElementById('json-input').value = samples.json;
+            } else if (type === 'yaml') {
+                document.getElementById('yaml-input').value = samples.yaml;
+            } else if (type === 'base64') {
+                document.getElementById('base64-input').value = samples.base64;
+            } else if (type === 'hash') {
+                document.getElementById('hash-input').value = samples.hash;
+            }
+        }
+
+        // Check API status on load
+        checkApiStatus();
+        setInterval(checkApiStatus, 5000); // Check every 5 seconds
+    </script>
+</body>
+</html>
