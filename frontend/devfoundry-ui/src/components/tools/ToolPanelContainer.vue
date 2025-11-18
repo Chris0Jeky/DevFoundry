@@ -35,6 +35,10 @@ import JsonYamlConverterPanel from './JsonYamlConverterPanel.vue'
 import Base64Panel from './Base64Panel.vue'
 import UuidPanel from './UuidPanel.vue'
 import HashPanel from './HashPanel.vue'
+import TimestampPanel from './TimestampPanel.vue'
+import StringCasePanel from './StringCasePanel.vue'
+import UrlEncoderPanel from './UrlEncoderPanel.vue'
+import JwtPanel from './JwtPanel.vue'
 
 const toolsStore = useToolsStore()
 
@@ -43,7 +47,11 @@ const toolComponents: Record<string, any> = {
   'json.yaml': JsonYamlConverterPanel,
   'encoding.base64': Base64Panel,
   'generation.uuid': UuidPanel,
-  'crypto.hash': HashPanel
+  'crypto.hash': HashPanel,
+  'time.timestamp': TimestampPanel,
+  'text.case': StringCasePanel,
+  'encoding.url': UrlEncoderPanel,
+  'crypto.jwt': JwtPanel
 }
 
 const currentComponent = computed(() => {

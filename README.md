@@ -42,11 +42,26 @@ Then open `http://localhost:5173` in your browser.
 
 ## Available Tools
 
+### Data Format Tools
 - **JSON Formatter** - Pretty-print or minify JSON
 - **JSON ⇄ YAML Converter** - Convert between formats
+
+### Encoding Tools
 - **Base64 Encoder/Decoder** - Encode/decode text
+- **URL Encoder/Decoder** - Encode/decode URL strings with RFC 3986 percent encoding (spaces as `%20`)
+
+### Generation Tools
 - **UUID Generator** - Generate v4 UUIDs
+
+### Crypto Tools
 - **Hash Calculator** - MD5, SHA-1, SHA-256, SHA-512
+- **JWT Decoder** - Decode JWT tokens and display header/payload
+
+### Time Tools
+- **Timestamp Converter** - Convert between Unix timestamp and human-readable date/time
+
+### Text Tools
+- **String Case Converter** - Convert between camelCase, PascalCase, snake_case, kebab-case, etc.
 
 ## Roadmap
 
@@ -56,10 +71,15 @@ Then open `http://localhost:5173` in your browser.
 * [x] CLI with `list`, `describe`, `run`
 * [x] HTTP API and Vue UI
 
+### Completed (v0.2.0)
+* [x] Additional tools: JWT decoder, timestamp converter, URL encoder, string case converter
+* [x] Comprehensive test coverage
+* [x] Enhanced tool categorization
+
 ### Future
 * [ ] Plugin discovery for external tools
+* [ ] CLI UX improvements (Spectre.Console integration)
 * [ ] Desktop packaging (Tauri/Electron)
-* [ ] Additional tools (JWT decoder, timestamp converter, etc.)
 * [ ] Dark mode
 * [ ] Tool favorites and history
 
