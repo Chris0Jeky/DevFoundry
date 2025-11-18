@@ -665,6 +665,48 @@ dotnet run --project src/DevFoundry.Cli -- list
 - Ensure parameter type is correctly parsed (int, bool, string)
 - Use `--param name=value` format
 
+#### 6. Build Fails with "File is Locked" Errors
+**Symptom**: Build fails with errors like `MSB3027: Could not copy "DevFoundry.Api.dll"` or `The file is locked by: "DevFoundry.Api (PID)"`
+
+**Cause**: Orphaned DevFoundry.Api or DevFoundry.Cli processes still running from previous test sessions, locking DLL files.
+
+**Solution**:
+
+**Windows (PowerShell):**
+```powershell
+# Kill all DevFoundry processes
+Get-Process | Where-Object {$_.ProcessName -like "*DevFoundry*"} | Stop-Process -Force
+
+# Or use the cleanup script
+.\scripts\cleanup-processes.ps1
+```
+
+**Windows (CMD):**
+```cmd
+# Kill specific process by PID (from error message)
+taskkill /F /PID <PID>
+
+# Kill all DevFoundry processes
+taskkill /F /IM DevFoundry.Api.exe
+taskkill /F /IM DevFoundry.Cli.exe
+```
+
+**Linux/macOS:**
+```bash
+# Kill all DevFoundry processes
+pkill -f DevFoundry
+
+# Or use the cleanup script
+./scripts/cleanup-processes.sh
+```
+
+**Prevention**:
+1. Always stop API/CLI processes when done testing
+2. Use `Ctrl+C` to gracefully stop foreground processes
+3. Run `dotnet clean` before switching branches
+4. Use the provided cleanup scripts regularly
+5. Consider using the API only for targeted endpoint tests, not long-running sessions
+
 ### Getting Help
 
 1. Check existing documentation (README.md, CLAUDE.md, DEVELOPMENT.md)
