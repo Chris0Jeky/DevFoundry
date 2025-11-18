@@ -6,7 +6,9 @@
       "Bash(dotnet restore:*)",
       "Bash(dotnet build:*)",
       "Bash(dotnet test:*)",
-      "Bash(dotnet run:*)"
+      "Bash(dotnet run:*)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)"
     ],
     "deny": [],
     "ask": []
