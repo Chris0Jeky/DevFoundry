@@ -56,13 +56,14 @@ All notable changes to DevFoundry will be documented in this file.
   - Supports camelCase, PascalCase, snake_case, kebab-case, UPPERCASE, lowercase, Title Case
   - Intelligent word boundary detection
 - **URL Encoder/Decoder Tool** - URL-safe encoding and decoding
-  - Percent encoding support
-  - Uses standard .NET WebUtility
+  - Percent encoding support with RFC 3986 semantics (spaces encoded as `%20`)
+  - Uses `Uri.EscapeDataString` / `Uri.UnescapeDataString`
 - **JWT Decoder Tool** - Decode and inspect JWT tokens
   - Displays header, payload, and signature
   - Pretty-printed JSON output
   - Security warning about signature verification
 - Comprehensive test suite for JsonYamlConverterTool
+- Added tests for timestamp, string case, URL encoder, and JWT decoder tools
 
 #### Frontend
 - Individual panels for all new tools

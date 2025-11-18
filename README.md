@@ -48,7 +48,7 @@ Then open `http://localhost:5173` in your browser.
 
 ### Encoding Tools
 - **Base64 Encoder/Decoder** - Encode/decode text
-- **URL Encoder/Decoder** - Encode/decode URL strings (percent encoding)
+- **URL Encoder/Decoder** - Encode/decode URL strings with RFC 3986 percent encoding (spaces as `%20`)
 
 ### Generation Tools
 - **UUID Generator** - Generate v4 UUIDs
