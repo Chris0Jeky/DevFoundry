@@ -100,19 +100,19 @@ public sealed class ColorConverterTool : ITool
 
         if (hex.Length == 6)
         {
-            var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
-            var g = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
-            var b = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
-            return new Color(r, g, b, 1.0);
+            var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            var g = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            var b = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            return CreateColor(r, g, b, 1.0);
         }
 
         if (hex.Length == 8)
         {
-            var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
-            var g = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
-            var b = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
-            var a = int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber) / 255.0;
-            return new Color(r, g, b, a);
+            var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            var g = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            var b = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            var a = int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture) / 255.0;
+            return CreateColor(r, g, b, a);
         }
 
         throw new ArgumentException("Invalid HEX color format. Use #RGB, #RRGGBB, or #RRGGBBAA");
@@ -127,12 +127,12 @@ public sealed class ColorConverterTool : ITool
             throw new ArgumentException("Invalid RGB/RGBA format. Use rgb(r, g, b) or rgba(r, g, b, a)");
         }
 
-        var r = int.Parse(match.Groups[1].Value);
-        var g = int.Parse(match.Groups[2].Value);
-        var b = int.Parse(match.Groups[3].Value);
-        var a = match.Groups[4].Success ? double.Parse(match.Groups[4].Value) : 1.0;
+        var r = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+        var g = int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+        var b = int.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+        var a = match.Groups[4].Success ? double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture) : 1.0;
 
-        return new Color(r, g, b, a);
+        return CreateColor(r, g, b, a);
     }
 
     private static Color ParseHsl(string hsl)
@@ -144,10 +144,12 @@ public sealed class ColorConverterTool : ITool
             throw new ArgumentException("Invalid HSL/HSLA format. Use hsl(h, s%, l%) or hsla(h, s%, l%, a)");
         }
 
-        var h = double.Parse(match.Groups[1].Value);
-        var s = double.Parse(match.Groups[2].Value);
-        var l = double.Parse(match.Groups[3].Value);
-        var a = match.Groups[4].Success ? double.Parse(match.Groups[4].Value) : 1.0;
+        var h = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+        var s = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+        var l = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+        var a = match.Groups[4].Success ? double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture) : 1.0;
+
+        ValidateHslRange(h, s, l, a);
 
         return HslToRgb(h, s, l, a);
     }
@@ -186,7 +188,11 @@ public sealed class ColorConverterTool : ITool
             b = HueToRgb(p, q, h - 1.0 / 3.0);
         }
 
-        return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255), a);
+        return CreateColor(
+            Math.Clamp((int)Math.Round(r * 255), 0, 255),
+            Math.Clamp((int)Math.Round(g * 255), 0, 255),
+            Math.Clamp((int)Math.Round(b * 255), 0, 255),
+            a);
     }
 
     private static double HueToRgb(double p, double q, double t)
@@ -199,13 +205,46 @@ public sealed class ColorConverterTool : ITool
         return p;
     }
 
+    private static Color CreateColor(int r, int g, int b, double a)
+    {
+        if (r is < 0 or > 255 || g is < 0 or > 255 || b is < 0 or > 255)
+        {
+            throw new ArgumentOutOfRangeException(nameof(r), "Color components must be between 0 and 255.");
+        }
+
+        if (a is < 0 or > 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(a), "Alpha must be between 0 and 1.");
+        }
+
+        return new Color(r, g, b, a);
+    }
+
+    private static void ValidateHslRange(double h, double s, double l, double a)
+    {
+        if (h is < 0 or > 360)
+        {
+            throw new ArgumentOutOfRangeException(nameof(h), "Hue must be between 0 and 360.");
+        }
+
+        if (s is < 0 or > 100 || l is < 0 or > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(s), "Saturation and lightness must be between 0 and 100.");
+        }
+
+        if (a is < 0 or > 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(a), "Alpha must be between 0 and 1.");
+        }
+    }
+
     private record Color(int R, int G, int B, double A)
     {
         public string ToHex()
         {
             if (A < 1.0)
             {
-                var alpha = (int)(A * 255);
+                var alpha = Math.Clamp((int)Math.Round(A * 255, MidpointRounding.AwayFromZero), 0, 255);
                 return $"#{R:X2}{G:X2}{B:X2}{alpha:X2}";
             }
             return $"#{R:X2}{G:X2}{B:X2}";
@@ -213,7 +252,10 @@ public sealed class ColorConverterTool : ITool
 
         public string ToRgb() => $"rgb({R}, {G}, {B})";
 
-        public string ToRgba() => $"rgba({R}, {G}, {B}, {A:F2})";
+        public string ToRgba()
+        {
+            return $"rgba({R}, {G}, {B}, {A.ToString("0.##", CultureInfo.InvariantCulture)})";
+        }
 
         public string ToHsl()
         {
@@ -224,7 +266,7 @@ public sealed class ColorConverterTool : ITool
         public string ToHsla()
         {
             var (h, s, l) = RgbToHsl();
-            return $"hsla({h:F0}, {s:F0}%, {l:F0}%, {A:F2})";
+            return $"hsla({h:F0}, {s:F0}%, {l:F0}%, {A.ToString("0.##", CultureInfo.InvariantCulture)})";
         }
 
         private (double h, double s, double l) RgbToHsl()

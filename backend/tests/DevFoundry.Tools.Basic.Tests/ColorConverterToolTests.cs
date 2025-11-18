@@ -1,5 +1,6 @@
 using DevFoundry.Core;
 using DevFoundry.Tools.Basic;
+using System.Globalization;
 using Xunit;
 
 namespace DevFoundry.Tools.Basic.Tests;
@@ -232,5 +233,56 @@ public class ColorConverterToolTests
 
         Assert.False(result.Success);
         Assert.Contains("Unknown target format", result.ErrorMessage!);
+    }
+
+    [Fact]
+    public void Execute_ReturnsError_ForOutOfRangeRgbValues()
+    {
+        var input = new ToolInput
+        {
+            Text = "rgb(300, -5, 10)",
+            Parameters = new Dictionary<string, object?>
+            {
+                ["targetFormat"] = "hex"
+            }
+        };
+
+        var result = _tool.Execute(input);
+
+        Assert.False(result.Success);
+        Assert.Contains("Color components must be between 0 and 255", result.ErrorMessage!);
+    }
+
+    [Fact]
+    public void Execute_UsesInvariantCulture_ForDecimalParsing()
+    {
+        var originalCulture = CultureInfo.CurrentCulture;
+        var originalUiCulture = CultureInfo.CurrentUICulture;
+
+        try
+        {
+            var culture = new CultureInfo("fr-FR");
+            CultureInfo.CurrentCulture = culture;
+            CultureInfo.CurrentUICulture = culture;
+
+            var input = new ToolInput
+            {
+                Text = "rgba(255, 87, 51, 0.5)",
+                Parameters = new Dictionary<string, object?>
+                {
+                    ["targetFormat"] = "hex"
+                }
+            };
+
+            var result = _tool.Execute(input);
+
+            Assert.True(result.Success);
+            Assert.Equal("#FF573380", result.OutputText);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+            CultureInfo.CurrentUICulture = originalUiCulture;
+        }
     }
 }
