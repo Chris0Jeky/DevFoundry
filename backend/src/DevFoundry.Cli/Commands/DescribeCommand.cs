@@ -1,5 +1,6 @@
 using System.CommandLine;
 using DevFoundry.Runtime;
+using Spectre.Console;
 
 namespace DevFoundry.Cli.Commands;
 
@@ -20,34 +21,64 @@ public class DescribeCommand : Command
 
             if (tool == null)
             {
-                Console.Error.WriteLine($"Error: Tool '{toolId}' not found.");
-                Console.Error.WriteLine("Use 'devfoundry list' to see available tools.");
+                AnsiConsole.MarkupLine($"[red]Error:[/] Tool '[yellow]{toolId}[/]' not found.");
+                AnsiConsole.MarkupLine("[dim]Use 'devfoundry list' to see available tools.[/]");
                 Environment.Exit(2);
                 return;
             }
 
             var descriptor = tool.Descriptor;
 
-            Console.WriteLine($"Tool: {descriptor.DisplayName}");
-            Console.WriteLine($"ID: {descriptor.Id}");
-            Console.WriteLine($"Category: {descriptor.Category}");
-            Console.WriteLine($"Description: {descriptor.Description}");
-
-            if (descriptor.Tags.Any())
+            // Main info panel
+            var panel = new Panel(
+                new Markup($"[bold]{descriptor.DisplayName}[/]\n\n" +
+                          $"[cyan]ID:[/] {descriptor.Id}\n" +
+                          $"[cyan]Category:[/] {descriptor.Category}\n" +
+                          $"[cyan]Description:[/] {descriptor.Description}\n\n" +
+                          (descriptor.Tags.Any()
+                            ? $"[cyan]Tags:[/] {string.Join(", ", descriptor.Tags.Select(t => $"[yellow]{t}[/]"))}"
+                            : "")))
             {
-                Console.WriteLine($"Tags: {string.Join(", ", descriptor.Tags)}");
-            }
+                Header = new PanelHeader($"[bold green]Tool Details[/]"),
+                Border = BoxBorder.Rounded,
+                BorderStyle = new Style(Color.Green)
+            };
+
+            AnsiConsole.Write(panel);
+            AnsiConsole.WriteLine();
 
             if (descriptor.Parameters.Any())
             {
-                Console.WriteLine("\nParameters:");
+                var paramsTable = new Table()
+                    .BorderColor(Color.Grey)
+                    .Border(TableBorder.Rounded)
+                    .Title("[yellow]Parameters[/]")
+                    .AddColumn(new TableColumn("[bold]Name[/]").Width(20))
+                    .AddColumn(new TableColumn("[bold]Type[/]").Width(15))
+                    .AddColumn(new TableColumn("[bold]Description[/]").Width(40))
+                    .AddColumn(new TableColumn("[bold]Default[/]").Width(15));
+
                 foreach (var param in descriptor.Parameters)
                 {
-                    Console.WriteLine($"  --{param.Name} ({param.Type})");
-                    Console.WriteLine($"    {param.Description}");
-                    Console.WriteLine($"    Default: {param.DefaultValue ?? "none"}");
+                    paramsTable.AddRow(
+                        $"[cyan]--{param.Name}[/]",
+                        $"[yellow]{param.Type}[/]",
+                        $"[grey]{param.Description}[/]",
+                        $"[dim]{param.DefaultValue?.ToString() ?? "none"}[/]"
+                    );
                 }
+
+                AnsiConsole.Write(paramsTable);
+                AnsiConsole.WriteLine();
             }
+
+            // Usage example
+            var exampleMarkup = new Markup(
+                $"[dim]Example usage:[/]\n" +
+                $"  devfoundry run [cyan]{descriptor.Id}[/] --text \"your input\""
+            );
+            AnsiConsole.Write(exampleMarkup);
+            AnsiConsole.WriteLine();
         }, toolIdArgument);
     }
 }

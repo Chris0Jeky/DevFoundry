@@ -11,6 +11,15 @@ public sealed class ToolRegistry : IToolRegistry
         _tools = tools.ToDictionary(t => t.Descriptor.Id, StringComparer.OrdinalIgnoreCase);
     }
 
+    public ToolRegistry(IEnumerable<ITool> tools, PluginConfiguration? configuration)
+    {
+        var filteredTools = configuration != null
+            ? tools.Where(t => configuration.IsToolEnabled(t.Descriptor.Id))
+            : tools;
+
+        _tools = filteredTools.ToDictionary(t => t.Descriptor.Id, StringComparer.OrdinalIgnoreCase);
+    }
+
     public IEnumerable<ITool> GetAllTools() => _tools.Values;
 
     public ITool? GetTool(string id)

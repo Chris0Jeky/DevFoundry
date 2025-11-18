@@ -10,6 +10,19 @@
   --color-text: #1f2937;
   --color-text-secondary: #6b7280;
   --color-border: #e5e7eb;
+  --color-header-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+/* Dark mode colors */
+:root.dark {
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+  --color-header-bg: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
 }
 
 body {
@@ -21,6 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
   color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 code {
