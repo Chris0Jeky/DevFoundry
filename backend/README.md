@@ -63,3 +63,33 @@ dotnet run
 ```
 
 The API will be available at `http://localhost:5000`.
+
+## 🎬 Try the Interactive Demo
+
+DevFoundry includes comprehensive demos showcasing all tools with visual output and pipeline workflows!
+
+### Quick Start
+
+**Command-Line Demo** (Recommended first):
+```powershell
+# Windows
+cd demo
+.\run-demo.ps1 -Fast
+
+# Linux/macOS
+cd demo
+./run-demo.sh --fast
+```
+
+**Web-Based Demo**:
+1. Start the API: `cd src/DevFoundry.Api && dotnet run`
+2. Open `demo/web-demo.html` in your browser
+
+See **[demo/README.md](demo/README.md)** for complete demo documentation.
+
+### What the Demo Shows
+- All 5 tools in action with sample data
+- Before/after output comparisons
+- Real-world pipeline workflow (JSON → Format → UUID → Hash → Base64)
+- Beautiful colored terminal output or interactive web UI
+- All outputs saved to `demo/output/` directory
