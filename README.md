@@ -110,6 +110,6 @@ Then open `http://localhost:5173` in your browser.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+GNU GPL v3 only - see [LICENSE](LICENSE) and [RELICENSING.md](RELICENSING.md) for details.
 
 DevFoundry is a personal productivity project designed for long-term extensibility.
