@@ -1,0 +1,15 @@
+{
+  "schema_version":1,"reviewed_on":"2026-09-10","repository":"Chris0Jeky/DevFoundry","stable_id":"devfoundry","runtime_class":"local",
+  "public_origin":null,"origin_evidence":"not-configured",
+  "target":"Local .NET/Vue toolkit; static marketing only if approved",
+  "source_paths":["README.md"],
+  "persistent_state":["Local tool inputs and configuration"],
+  "invariants":["No user-input egress introduced","A Vue client does not make the local API a static hosted service","No new shared platform or account system"],
+  "gates":["Public name clearance","Static versus local execution boundary","Separate publication approval"],
+  "tasks":[
+    {"id":"DF1","goal":"Document which tools require the local API","acceptance":"The site distinguishes local execution from static demonstrations"},
+    {"id":"DF2","goal":"Prepare synthetic static marketing assets","acceptance":"No private inputs, keys or local paths are published"},
+    {"id":"DF3","goal":"Preserve existing local invocation","acceptance":"No runtime rewrite, port exposure or package rename is introduced"}
+  ],
+  "activation_authorized":false
+}
